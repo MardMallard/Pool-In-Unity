@@ -8,12 +8,14 @@ public class PlayerController : MonoBehaviour
 	private bool dragging = false;
 	private Vector3 startMousePosition = Vector3.zero;
 	private Vector3 offset = Vector3.zero;
-	public int magnitude = 1;
+	private float scaler = 0.5F;
+	public float magnitude = 0.01F;
 
 	// Use this for initialization
 	void Start ()
     {
         rigidBody = GetComponent<Rigidbody>();
+		rigidBody.sleepThreshold = 100F;
 	}
 	
 	// Update is called once per frame
@@ -31,8 +33,6 @@ public class PlayerController : MonoBehaviour
 				dragging = false;
 				
 				rigidBody.AddForce(offset * magnitude, ForceMode.Impulse);
-				Debug.Log("Stopped dragging.");
-				Debug.Log(offset * magnitude);
 			}
 		}
 		//Otherwise, check to see if the player is commencing dragging.
@@ -43,8 +43,13 @@ public class PlayerController : MonoBehaviour
 			{
 				startMousePosition = Input.mousePosition;
 				dragging = true;
-				Debug.Log("Started dragging.");
 			}
 		}
+	}
+	
+	void FixedUpdate()
+	{
+		rigidBody.inertiaTensorRotation = new Quaternion(0.01F, 0.01F, 0.01F, 1F);
+		rigidBody.AddTorque(-rigidBody.angularVelocity * scaler);
 	}
 }
