@@ -23,12 +23,15 @@ public class PlayerController : MonoBehaviour
 		//If not, do nothing.
 		if (dragging)
 		{
-			if (!Input.GetMouseButtonDown(0))
+			if (!Input.GetMouseButton(0))
 			{
-				offset = Input.mousePosition - startMousePosition;
+				offset = startMousePosition - Input.mousePosition;
+				//We want the ball to move on the x and z axes, not x and y.
+				offset.Set(offset.x, 0, offset.y); 
 				dragging = false;
 				
 				rigidBody.AddForce(offset * magnitude, ForceMode.Impulse);
+				Debug.Log("Stopped dragging.");
 				Debug.Log(offset * magnitude);
 			}
 		}
@@ -36,10 +39,11 @@ public class PlayerController : MonoBehaviour
 		//If so, set dragging to true and record mouse position
 		else
 		{
-			if (Input.GetMouseButtonDown(0))
+			if (Input.GetMouseButton(0))
 			{
 				startMousePosition = Input.mousePosition;
 				dragging = true;
+				Debug.Log("Started dragging.");
 			}
 		}
 	}
