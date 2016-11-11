@@ -8,14 +8,12 @@ public class PlayerController : MonoBehaviour
 	private bool dragging = false;
 	private Vector3 startMousePosition = Vector3.zero;
 	private Vector3 offset = Vector3.zero;
-	private float scaler = 0.5F;
-	public float magnitude = 0.01F;
+	public float magnitude;
 
 	// Use this for initialization
 	void Start ()
     {
         rigidBody = GetComponent<Rigidbody>();
-		rigidBody.sleepThreshold = 100F;
 	}
 	
 	// Update is called once per frame
@@ -45,11 +43,5 @@ public class PlayerController : MonoBehaviour
 				dragging = true;
 			}
 		}
-	}
-	
-	void FixedUpdate()
-	{
-		rigidBody.inertiaTensorRotation = new Quaternion(0.01F, 0.01F, 0.01F, 1F);
-		rigidBody.AddTorque(-rigidBody.angularVelocity * scaler);
 	}
 }
