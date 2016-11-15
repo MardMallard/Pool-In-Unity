@@ -14,6 +14,12 @@ public class SinkBall : MonoBehaviour
 		
 		switch (tag)
 		{
+			case "Cue Ball":
+				//If the cue ball is sunk, put it back on the table
+				ball.gameObject.SetActive(true);
+				ball.GetComponent<Rigidbody>().MovePosition(new Vector3(-50,110,0));
+				ball.GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);	
+				break;
 			case "Ball1":
 				ballDisplays[0].SetActive(true);
 				break;
