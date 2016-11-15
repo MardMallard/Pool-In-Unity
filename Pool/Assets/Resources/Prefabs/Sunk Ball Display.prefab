@@ -22,7 +22,7 @@ GameObject:
   - 222: {fileID: 222000010869084206}
   - 114: {fileID: 114000011599598652}
   m_Layer: 5
-  m_Name: Ball 1
+  m_Name: Sunk Ball Display
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
