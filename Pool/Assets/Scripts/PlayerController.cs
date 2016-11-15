@@ -25,11 +25,22 @@ public class PlayerController : MonoBehaviour
 		{
 			if (!Input.GetMouseButton(0))
 			{
-				offset = Input.mousePosition - startMousePosition;
-				//We want the ball to move on the x and z axes, not x and y.
-				offset.Set(offset.x, 0, offset.y); 
+				//Determine the mouse position on the horizontal plane.
+				Plane plane = new Plane(Vector3.up, new Vector3(0, -30, 0));
+				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+				float distance = 0;
+				plane.Raycast(ray, out distance);
+				
+				Debug.Log("Start position: " + startMousePosition);
+				Debug.Log("End position: " + ray.GetPoint(distance));
+				
+				//Determine the offset
+				offset = ray.GetPoint(distance) - startMousePosition;
+				
+				//User is no longer dragging.
 				dragging = false;
 				
+				//Apply a force to the ball.
 				rigidBody.AddForce(offset * magnitude, ForceMode.Impulse);
 			}
 		}
@@ -39,7 +50,14 @@ public class PlayerController : MonoBehaviour
 		{
 			if (Input.GetMouseButton(0))
 			{
-				startMousePosition = Input.mousePosition;
+				//Determine the mouse position on the horizonal plane
+				Plane plane = new Plane(Vector3.up, new Vector3(0, -30, 0));
+				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+				float distance = 0;
+				plane.Raycast(ray, out distance);
+				startMousePosition = ray.GetPoint(distance);
+				
+				//The user is now dragging.
 				dragging = true;
 			}
 		}
