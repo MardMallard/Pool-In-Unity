@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
 		{
 			if (!Input.GetMouseButton(0))
 			{
-				offset = startMousePosition - Input.mousePosition;
+				offset = Input.mousePosition - startMousePosition;
 				//We want the ball to move on the x and z axes, not x and y.
 				offset.Set(offset.x, 0, offset.y); 
 				dragging = false;
