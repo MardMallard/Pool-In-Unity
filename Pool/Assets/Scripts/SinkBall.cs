@@ -4,6 +4,7 @@ using System.Collections;
 public class SinkBall : MonoBehaviour 
 {
 	public GameObject[] ballDisplays;
+	public GameObject winText;
 	
 	void OnTriggerEnter(Collider ball)
 	{
@@ -63,6 +64,19 @@ public class SinkBall : MonoBehaviour
 				break;
 		}
 
-		Debug.Log("Deactivated ball");
+		checkWinCondition();
+	}
+	
+	void checkWinCondition()
+	{
+		//Check if they won the game.
+		foreach (GameObject g in ballDisplays)
+		{
+			if (g.activeInHierarchy == false)
+				return;
+		}
+	
+		//If this has been reached all the balls have been sunk.
+		winText.SetActive(true);
 	}
 }
