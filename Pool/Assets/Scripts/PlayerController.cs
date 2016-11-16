@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System.Collections;
 
 public class PlayerController : MonoBehaviour
@@ -8,12 +9,27 @@ public class PlayerController : MonoBehaviour
 	private bool dragging = false;
 	private Vector3 startMousePosition = Vector3.zero;
 	private Vector3 offset = Vector3.zero;
+	private Behaviour halo = null;
 	public float magnitude;
 
 	// Use this for initialization
 	void Start ()
     {
         rigidBody = GetComponent<Rigidbody>();
+		halo = gameObject.GetComponent("Halo") as Behaviour;
+	}
+	
+	//Highlight the cue ball on mouseover
+	public void OnMouseEnter()
+	{
+		halo.enabled = true;
+	}
+	
+	public void OnMouseExit()
+	{
+		//If player is dragging, don't disable the halo.
+		if (!Input.GetMouseButton(0))
+			halo.enabled = false;
 	}
 	
 	// Update is called once per frame
@@ -36,6 +52,7 @@ public class PlayerController : MonoBehaviour
 				
 				//User is no longer dragging.
 				dragging = false;
+				halo.enabled = false;
 				
 				//Apply a force to the ball.
 				rigidBody.AddForce(offset * magnitude, ForceMode.Impulse);
