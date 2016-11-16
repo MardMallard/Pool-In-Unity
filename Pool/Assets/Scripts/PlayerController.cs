@@ -31,9 +31,6 @@ public class PlayerController : MonoBehaviour
 				float distance = 0;
 				plane.Raycast(ray, out distance);
 				
-				Debug.Log("Start position: " + startMousePosition);
-				Debug.Log("End position: " + ray.GetPoint(distance));
-				
 				//Determine the offset
 				offset = ray.GetPoint(distance) - startMousePosition;
 				
