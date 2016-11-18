@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stopThreshold: 0.2
-  slowThreshold: 5
+  slowThreshold: 2
   slowFactor: 10
 --- !u!135 &135000013678873706
 SphereCollider:

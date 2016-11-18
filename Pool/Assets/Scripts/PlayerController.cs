@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
 	private Behaviour halo = null;
 	public float magnitude;
 	public LineRenderer lineRenderer;
+	public Rigidbody[] balls;
 
 	// Use this for initialization
 	void Start ()
@@ -71,6 +72,14 @@ public class PlayerController : MonoBehaviour
 	//For player clicking and dragging the cue ball.
 	void OnMouseDown()
 	{
+		//Player controls are disabled while any of the balls are in motion.
+		foreach (Rigidbody r in balls)
+			if (r.gameObject.activeInHierarchy == true && r.velocity.magnitude > 0.01)
+				return;
+		
+		if (rigidBody.velocity.magnitude > 0.01)
+			return;
+		
 		//Determine the mouse position on the horizonal plane
 		startMousePosition = rigidBody.position;
 				
