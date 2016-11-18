@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
 	public LineRenderer lineRenderer;
 	public Rigidbody[] balls;
 	public Text playerLabel;
+	public DisplayMessage displayMessage;
 
 	// Use this for initialization
 	void Start ()
@@ -50,8 +51,7 @@ public class PlayerController : MonoBehaviour
 			halo.enabled = false;
 	}
 	
-	// Update is called once per frame
-	void Update ()
+	void LateUpdate ()
     {
 		//If the player was dragging last frame, check to see if released.
 		//If not, do nothing.
@@ -86,7 +86,7 @@ public class PlayerController : MonoBehaviour
 		//If any balls are in motion, controls should be disabled.
 		bool anyMoving = false;
 		foreach (Rigidbody r in balls)
-			if (r.gameObject.activeInHierarchy == true && r.velocity.magnitude > 0.01)
+			if (r.gameObject.activeInHierarchy == true && r.velocity.magnitude > 0.001)
 				anyMoving = true;
 			
 		if (anyMoving)
@@ -103,7 +103,8 @@ public class PlayerController : MonoBehaviour
 	void OnMouseDown()
 	{
 		//Player controls are disabled while any of the balls are in motion.
-		
+		if (disableControl)
+			return;
 		
 		if (rigidBody.velocity.magnitude > 0.01)
 			return;
@@ -144,11 +145,21 @@ public class PlayerController : MonoBehaviour
 		{
 			Debug.Log("First round.");
 			changePlayer(player1);
-			
+			return;
 		}
+		
+		//Does the player get another turn?
+		if (currentPlayer.extraTurn)
+		{
+			Debug.Log("Player gets another turn!");
+			currentPlayer.extraTurn = false;
+			//Display stuff for extra turn.
+			displayMessage.displayMessage("You get another turn for pocketing a ball!");
+			return;
+		}
+		
 		//Switch the player every round.
-		else
-			changePlayer(otherPlayer(currentPlayer));
+		changePlayer(otherPlayer(currentPlayer));
 	}
 	
 	//Everything related to changing the current player.
@@ -166,5 +177,23 @@ public class PlayerController : MonoBehaviour
 			return player2;
 		else
 			return player1;
+	}
+	
+	public void onBallPocketed(int num)
+	{
+		//Cue ball pocketed!
+		if (num == 0)
+		{
+			
+		}
+		//Eight-ball pocketed!
+		else if (num == 8)
+		{
+			
+		}
+		//Other ball pocketed
+		else
+			if (currentPlayer.ballPocketed(num))
+				currentPlayer.extraTurn = true;
 	}
 }

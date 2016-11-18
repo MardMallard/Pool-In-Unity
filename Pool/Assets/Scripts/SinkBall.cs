@@ -5,70 +5,37 @@ public class SinkBall : MonoBehaviour
 {
 	public GameObject[] ballDisplays;
 	public GameObject winText;
+	public PlayerController pc;
 	
 	void OnTriggerEnter(Collider ball)
 	{
-		string tag = ball.tag;
-		
-		ball.gameObject.SetActive(false);
-		
-		switch (tag)
+		//Get a number to represent the ball that was just sunk.
+		int ballNum = 0;
+		if (ball.tag == null || ball.tag.Length == 0 || !int.TryParse(ball.tag, out ballNum))
 		{
-			case "Cue Ball":
-				//If the cue ball is sunk, put it back on the table
-				ball.gameObject.SetActive(true);
-				ball.GetComponent<Rigidbody>().MovePosition(new Vector3(-50,110,0));
-				ball.GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);	
-				break;
-			case "Ball1":
-				ballDisplays[0].SetActive(true);
-				break;
-			case "Ball2":
-				ballDisplays[1].SetActive(true);
-				break;
-			case "Ball3":
-				ballDisplays[2].SetActive(true);
-				break;
-			case "Ball4":
-				ballDisplays[3].SetActive(true);
-				break;
-			case "Ball5":
-				ballDisplays[4].SetActive(true);
-				break;
-			case "Ball6":
-				ballDisplays[5].SetActive(true);
-				break;
-			case "Ball7":
-				ballDisplays[6].SetActive(true);
-				break;
-			case "Ball8":
-				ballDisplays[7].SetActive(true);
-				break;
-			case "Ball9":
-				ballDisplays[8].SetActive(true);
-				break;
-			case "Ball10":
-				ballDisplays[9].SetActive(true);
-				break;
-			case "Ball11":
-				ballDisplays[10].SetActive(true);
-				break;
-			case "Ball12":
-				ballDisplays[11].SetActive(true);
-				break;
-			case "Ball13":
-				ballDisplays[12].SetActive(true);
-				break;
-			case "Ball14":
-				ballDisplays[13].SetActive(true);
-				break;
-			case "Ball15":
-				ballDisplays[14].SetActive(true);
-				break;
-			default:
-				ball.gameObject.SetActive(true);
-				break;
+			//Parsing the tag into a number was not successful
+			//So this is not a ball.
+			ball.gameObject.SetActive(false);
+			return;
 		}
+		
+		//Cue ball
+		if (ballNum == 0)
+		{
+			//Set the cue ball back on the table
+			ball.GetComponent<Rigidbody>().MovePosition(new Vector3(0, 40, 0));
+			ball.GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);	
+			Debug.Log("Cue ball pocketed.");
+		}
+		//All other balls
+		else
+		{
+			ballDisplays[ballNum-1].SetActive(true);
+			ball.gameObject.SetActive(false);
+		}
+		
+		//Let the player controller know a ball was pocketed.
+		pc.onBallPocketed(ballNum);
 
 		checkWinCondition();
 	}
