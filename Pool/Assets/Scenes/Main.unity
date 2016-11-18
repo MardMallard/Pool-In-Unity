@@ -993,19 +993,6 @@ Prefab:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 3438ce6fc8581dd449166cbc7e52890e, type: 2}
-    - target: {fileID: 54000013023036788, guid: 63e716ec7837556418f8916afdc3b87e,
-        type: 2}
-      propertyPath: m_AngularDrag
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1000010466234078, guid: 63e716ec7837556418f8916afdc3b87e, type: 2}
-      propertyPath: m_TagString
-      value: Ball1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1000010466234078, guid: 63e716ec7837556418f8916afdc3b87e, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 63e716ec7837556418f8916afdc3b87e, type: 2}
   m_IsPrefabParent: 0
@@ -3170,7 +3157,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1516603927}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 42.5, z: -21}
+  m_LocalPosition: {x: -0, y: 42.5, z: -21.5}
   m_LocalScale: {x: 81, y: 35, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -4266,7 +4253,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2069001069}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 42.5, z: 21}
+  m_LocalPosition: {x: 0, y: 42.5, z: 21.5}
   m_LocalScale: {x: 81, y: 35, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
