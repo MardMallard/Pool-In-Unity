@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
 	private Vector3 endMousePosition = Vector3.zero;
 	private Vector3 offset = Vector3.zero;
 	private Behaviour halo = null;
+	private bool disableControl = false;
 	
 	private Player player1;
 	private Player player2;
@@ -81,15 +82,28 @@ public class PlayerController : MonoBehaviour
 				lineRenderer.SetPositions(new Vector3[] {startMousePosition, getMousePosition()});
 			}
 		}
+		
+		//If any balls are in motion, controls should be disabled.
+		bool anyMoving = false;
+		foreach (Rigidbody r in balls)
+			if (r.gameObject.activeInHierarchy == true && r.velocity.magnitude > 0.01)
+				anyMoving = true;
+			
+		if (anyMoving)
+			disableControl = true;
+		//If all balls have just come to a stop, start a new round.
+		else if (disableControl)
+		{
+			disableControl = false;
+			assessRound();
+		}
 	}
 	
 	//For player clicking and dragging the cue ball.
 	void OnMouseDown()
 	{
 		//Player controls are disabled while any of the balls are in motion.
-		foreach (Rigidbody r in balls)
-			if (r.gameObject.activeInHierarchy == true && r.velocity.magnitude > 0.01)
-				return;
+		
 		
 		if (rigidBody.velocity.magnitude > 0.01)
 			return;
@@ -132,6 +146,9 @@ public class PlayerController : MonoBehaviour
 			changePlayer(player1);
 			
 		}
+		//Switch the player every round.
+		else
+			changePlayer(otherPlayer(currentPlayer));
 	}
 	
 	//Everything related to changing the current player.

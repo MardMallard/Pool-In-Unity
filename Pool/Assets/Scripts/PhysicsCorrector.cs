@@ -24,6 +24,7 @@ public class PhysicsCorrector : MonoBehaviour
 		//If the ball is moving under a certain velocity, stop it from moving.
 		if (rigidBody.velocity.magnitude < stopThreshold)
 			rigidBody.velocity = Vector3.zero;
+		
 		//If ball is moving over the velocity, slow it down incrementally based on the speed.
 		else if (rigidBody.velocity.magnitude < slowThreshold)
 		{
