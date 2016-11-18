@@ -11,15 +11,29 @@ public class PlayerController : MonoBehaviour
 	private Vector3 endMousePosition = Vector3.zero;
 	private Vector3 offset = Vector3.zero;
 	private Behaviour halo = null;
+	
+	private Player player1;
+	private Player player2;
+	private Player currentPlayer;
+	
 	public float magnitude;
 	public LineRenderer lineRenderer;
 	public Rigidbody[] balls;
+	public Text playerLabel;
 
 	// Use this for initialization
 	void Start ()
     {
         rigidBody = GetComponent<Rigidbody>();
 		halo = gameObject.GetComponent("Halo") as Behaviour;
+		
+		//Initialise players
+		player1 = new Player(PlayerNumber.One);
+		player2 = new Player(PlayerNumber.Two);
+		currentPlayer = null;
+		
+		//Start the first round
+		assessRound();
 	}
 	
 	//Highlight the cue ball on mouseover
@@ -99,5 +113,41 @@ public class PlayerController : MonoBehaviour
 		float distance = 0;
 		plane.Raycast(ray, out distance);
 		return ray.GetPoint(distance);
+	}
+	
+	//Switches control over between player 1 and player 2
+	void switchPlayer()
+	{
+		currentPlayer = otherPlayer(currentPlayer);
+	}
+	
+	void assessRound()
+	{
+		Debug.Log("Assessing round!");
+		
+		//It's the first round.
+		if (currentPlayer == null)
+		{
+			Debug.Log("First round.");
+			changePlayer(player1);
+			
+		}
+	}
+	
+	//Everything related to changing the current player.
+	void changePlayer(Player player)
+	{
+		Debug.Log("Switching to player: " + player.getPlayerNumber());
+		currentPlayer = player;
+		playerLabel.text = "PLAYER " + (int)player.getPlayerNumber();
+	}
+	
+	//Easily switch between players without writing a whole bunch of ifs and elses.
+	Player otherPlayer(Player player)
+	{
+		if (player.getPlayerNumber() == PlayerNumber.One)
+			return player2;
+		else
+			return player1;
 	}
 }
