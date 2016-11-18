@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour
 	private Vector3 offset = Vector3.zero;
 	private Behaviour halo = null;
 	private bool disableControl = false;
-	private bool resettingCueBall = false;
 	private bool gameOver = false;
 	
 	private Player player1;
@@ -24,6 +23,7 @@ public class PlayerController : MonoBehaviour
 	public Rigidbody[] balls;
 	public Text playerLabel;
 	public DisplayMessage displayMessage;
+	public GameObject Tutorial;
 
 	// Use this for initialization
 	void Start ()
@@ -36,7 +36,13 @@ public class PlayerController : MonoBehaviour
 		player2 = new Player(PlayerNumber.Two);
 		currentPlayer = null;
 		
-		//Start the first round
+		//After 5 seconds, remove the tutorial and start the first round.
+		Invoke("Begin", 5F);
+	}
+	
+	private void Begin()
+	{
+		Tutorial.SetActive(false);
 		assessRound();
 	}
 	
@@ -155,18 +161,11 @@ public class PlayerController : MonoBehaviour
 		{
 			Debug.Log("First round.");
 			changePlayer(player1);
+			disableControl = false;
 			return;
 		}
 		
 		Player other = otherPlayer(currentPlayer);
-		
-		//Is the cue ball still resetting?
-		if (resettingCueBall)
-		{
-			Debug.Log("Cue ball is resetting.");
-			resettingCueBall = false;
-			return;
-		}
 		
 		//Did the player get a penalty for pocketing the cue ball?
 		if (currentPlayer.penalty)
@@ -224,13 +223,12 @@ public class PlayerController : MonoBehaviour
 		{
 			Debug.Log("Penalty.");
 			currentPlayer.penalty = true;
-			resettingCueBall = true;
 		}
 		//Eight-ball pocketed!
 		else if (num == 8)
 		{
-			Debug.Log("8-ball pocketed.");
-			if (currentPlayer.allBallsArePocketed())
+			Debug.Log("8-ball pocketed: current player " + currentPlayer.getPlayerNumber());
+			if (allBallsArePocketed(currentPlayer.getPlayerNumber()))
 				declareWinner(currentPlayer, true);
 			else
 				declareWinner(otherPlayer(currentPlayer), false);
@@ -238,22 +236,35 @@ public class PlayerController : MonoBehaviour
 			
 		//Other ball pocketed
 		else
-			if (currentPlayer.ballPocketed(num))
+			if (currentPlayer.isValidBall(num))
 				currentPlayer.extraTurn = true;
 	}
 	
 	private void declareWinner(Player player, bool inSequence)
 	{
-		int current = (int)currentPlayer.getPlayerNumber();
-		int observer = (int)otherPlayer(currentPlayer).getPlayerNumber();
+		int winner = (int)currentPlayer.getPlayerNumber();
+		int loser = (int)otherPlayer(currentPlayer).getPlayerNumber();
 		
 		if (inSequence)
-			displayMessage.displayMessage("Player " + current 
-			+ " pocketed all their balls and the 8-ball. Player " + current + " wins!", 0);
+			displayMessage.displayMessage("Player " + winner
+			+ " pocketed all their balls and the 8-ball. Player " + winner + " wins!", 0);
 		else
-			displayMessage.displayMessage("Player " + current
-			+ " pocketed the 8-ball out of sequence. Player " + observer + " wins!", 0);
+			displayMessage.displayMessage("Player " + loser
+			+ " pocketed the 8-ball out of sequence. Player " + winner + " wins!", 0);
 		
 		gameOver = true;
+	}
+	
+	private bool allBallsArePocketed(PlayerNumber pnum)
+	{
+		if (pnum == PlayerNumber.One)
+			for (int i = 1; i < 8; i++)
+				if (balls[i].gameObject.activeInHierarchy)
+					return false;
+		else
+			for (int j = 9; j < 16; j++)
+				if (balls[j].gameObject.activeInHierarchy)
+					return false;
+		return true;
 	}
 }
