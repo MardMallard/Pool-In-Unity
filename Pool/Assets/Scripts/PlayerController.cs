@@ -89,11 +89,15 @@ public class PlayerController : MonoBehaviour
 			if (r.gameObject.activeInHierarchy == true && r.velocity.magnitude > 0.001)
 				anyMoving = true;
 			
+		if (rigidBody.velocity.magnitude > 0.001)
+			anyMoving = true;
+		
 		if (anyMoving)
 			disableControl = true;
 		//If all balls have just come to a stop, start a new round.
 		else if (disableControl)
 		{
+			Debug.Log("All balls have stopped.");
 			disableControl = false;
 			assessRound();
 		}
@@ -148,13 +152,27 @@ public class PlayerController : MonoBehaviour
 			return;
 		}
 		
+		//Did the player get a penalty for pocketing the cue ball?
+		if (currentPlayer.penalty)
+		{
+			Debug.Log("Penalty for pocketing the cue ball!");
+			currentPlayer.penalty = false;
+			Player other = otherPlayer(currentPlayer);
+			
+			//Give the other player an extra turn.
+			other.extraTurn = true;
+			//Display stuff
+			displayMessage.displayMessage("You pocketed the cue ball!\n Player " 
+			+ (int)other.getPlayerNumber() + " gets an extra turn.");
+		}
+		
 		//Does the player get another turn?
-		if (currentPlayer.extraTurn)
+		else if (currentPlayer.extraTurn)
 		{
 			Debug.Log("Player gets another turn!");
 			currentPlayer.extraTurn = false;
 			//Display stuff for extra turn.
-			displayMessage.displayMessage("You get another turn for pocketing a ball!");
+			displayMessage.displayMessage("You get another turn!");
 			return;
 		}
 		
@@ -186,7 +204,8 @@ public class PlayerController : MonoBehaviour
 		//Cue ball pocketed!
 		if (num == 0)
 		{
-			
+			Debug.Log("Penalty.");
+			currentPlayer.penalty = true;
 		}
 		//Eight-ball pocketed!
 		else if (num == 8)

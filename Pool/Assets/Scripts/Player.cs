@@ -8,7 +8,7 @@ public class Player
 	private PlayerNumber playerNumber;
 	public bool extraTurn = false;
 	private bool pocketedBlack = false;
-	private bool penalty = false;
+	public bool penalty = false;
 	private bool[] ballsPocketed = new bool[7]; //true for pocketed, false for not pocketed
 	public GameObject[] balls;
 	
