@@ -36,20 +36,5 @@ public class SinkBall : MonoBehaviour
 		
 		//Let the player controller know a ball was pocketed.
 		pc.onBallPocketed(ballNum);
-
-		checkWinCondition();
-	}
-	
-	void checkWinCondition()
-	{
-		//Check if they won the game.
-		foreach (GameObject g in ballDisplays)
-		{
-			if (g.activeInHierarchy == false)
-				return;
-		}
-	
-		//If this has been reached all the balls have been sunk.
-		winText.SetActive(true);
 	}
 }
