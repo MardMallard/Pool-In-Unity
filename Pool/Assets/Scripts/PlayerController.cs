@@ -66,29 +66,26 @@ public class PlayerController : MonoBehaviour
 				lineRenderer.SetPositions(new Vector3[] {startMousePosition, getMousePosition()});
 			}
 		}
-		//Otherwise, check to see if the player is commencing dragging.
-		//If so, set dragging to true and record mouse position
-		else
-		{
-			if (Input.GetMouseButton(0))
-			{
-				//Determine the mouse position on the horizonal plane
-				startMousePosition = getMousePosition();
+	}
+	
+	//For player clicking and dragging the cue ball.
+	void OnMouseDown()
+	{
+		//Determine the mouse position on the horizonal plane
+		startMousePosition = rigidBody.position;
 				
-				//Add line
-				lineRenderer.enabled = true;
+		//Add line
+		lineRenderer.enabled = true;
 				
-				//The user is now dragging.
-				dragging = true;
-			}
-		}
+		//The user is now dragging.
+		dragging = true;
 	}
 	
 	//Determine the mouse position on the horizontal plane.
 	Vector3 getMousePosition()
 	{
 		//Determine the mouse position on the horizontal plane.
-		Plane plane = new Plane(Vector3.up, new Vector3(0, -30, 0));
+		Plane plane = new Plane(Vector3.up, rigidBody.position);
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		float distance = 0;
 		plane.Raycast(ray, out distance);
