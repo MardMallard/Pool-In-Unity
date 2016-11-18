@@ -168,6 +168,8 @@ public class PlayerController : MonoBehaviour
 		Debug.Log("Switching to player: " + player.getPlayerNumber());
 		currentPlayer = player;
 		playerLabel.text = "PLAYER " + (int)player.getPlayerNumber();
+		displayMessage.displayMessage("Switching to player " 
+		+ (int)currentPlayer.getPlayerNumber() + ".");
 	}
 	
 	//Easily switch between players without writing a whole bunch of ifs and elses.
