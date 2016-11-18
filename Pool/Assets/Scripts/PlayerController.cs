@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
 	private Behaviour halo = null;
 	private bool disableControl = false;
 	private bool resettingCueBall = false;
+	private bool gameOver = false;
 	
 	private Player player1;
 	private Player player2;
@@ -54,6 +55,10 @@ public class PlayerController : MonoBehaviour
 	
 	void LateUpdate ()
     {
+		//Don't do anything if the game is over.
+		if (gameOver)
+			return;
+		
 		//If the player was dragging last frame, check to see if released.
 		//If not, do nothing.
 		if (dragging)
@@ -173,7 +178,7 @@ public class PlayerController : MonoBehaviour
 			other.extraTurn = true;
 			//Display stuff
 			displayMessage.displayMessage("You pocketed the cue ball!\n Player " 
-			+ (int)other.getPlayerNumber() + " gets an extra turn.");
+			+ (int)other.getPlayerNumber() + " gets an extra turn.", 2F);
 		}
 		
 		//Does the player get another turn?
@@ -182,12 +187,12 @@ public class PlayerController : MonoBehaviour
 			Debug.Log("Player gets another turn!");
 			currentPlayer.extraTurn = false;
 			//Display stuff for extra turn.
-			displayMessage.displayMessage("You get another turn!");
+			displayMessage.displayMessage("You get another turn!", 2F);
 			return;
 		}
 		else
 			displayMessage.displayMessage("Switching to player " 
-		+ (int)other.getPlayerNumber() + ".");
+		+ (int)other.getPlayerNumber() + ".", 2F);
 		
 		//Switch the player every round.
 		changePlayer(other);
@@ -224,11 +229,31 @@ public class PlayerController : MonoBehaviour
 		//Eight-ball pocketed!
 		else if (num == 8)
 		{
-			
+			Debug.Log("8-ball pocketed.");
+			if (currentPlayer.allBallsArePocketed())
+				declareWinner(currentPlayer, true);
+			else
+				declareWinner(otherPlayer(currentPlayer), false);
 		}
+			
 		//Other ball pocketed
 		else
 			if (currentPlayer.ballPocketed(num))
 				currentPlayer.extraTurn = true;
+	}
+	
+	private void declareWinner(Player player, bool inSequence)
+	{
+		int current = (int)currentPlayer.getPlayerNumber();
+		int observer = (int)otherPlayer(currentPlayer).getPlayerNumber();
+		
+		if (inSequence)
+			displayMessage.displayMessage("Player " + current 
+			+ " pocketed all their balls and the 8-ball. Player " + current + " wins!", 0);
+		else
+			displayMessage.displayMessage("Player " + current
+			+ " pocketed the 8-ball out of sequence. Player " + observer + " wins!", 0);
+		
+		gameOver = true;
 	}
 }

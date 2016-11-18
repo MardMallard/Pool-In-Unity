@@ -14,13 +14,13 @@ public class DisplayMessage : MonoBehaviour
 	void Update()
 	{}
 	
-	public void displayMessage(string message)
+	public void displayMessage(string message, float duration)
 	{
-		Debug.Log("Displaying message.");
-		
 		display.gameObject.SetActive(true);
 		display.text = message;
-		Invoke("disableMessage", 2F);
+		
+		if (duration != 0)
+			Invoke("disableMessage", duration);
 	}
 	
 	private void disableMessage()

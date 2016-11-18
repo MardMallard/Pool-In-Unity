@@ -7,11 +7,10 @@ public class Player
 {
 	private PlayerNumber playerNumber;
 	public bool extraTurn = false;
-	private bool pocketedBlack = false;
+	public bool pocketedBlack = false;
 	public bool penalty = false;
 	private bool[] ballsPocketed = new bool[7]; //true for pocketed, false for not pocketed
 	public GameObject[] balls;
-	
 	
 	public Player(PlayerNumber playerNumber)
 	{
@@ -39,12 +38,13 @@ public class Player
 		return true;
 	}
 	
-	public bool ballIsPocketed(int num)
+	//Checks whether all the player's balls have been pocketed.
+	public bool allBallsArePocketed()
 	{
-		//If it's not one of this player's balls, return false;
-		if (((int)playerNumber == 1 && num > 7) || ((int)playerNumber == 2 && num < 9))
-			return false;
+		foreach (bool go in ballsPocketed)
+			if (!go)
+				return false;
 		
-		return ballsPocketed[num];
+		return true;
 	}
 }
