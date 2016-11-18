@@ -23,7 +23,7 @@ public class SinkBall : MonoBehaviour
 		if (ballNum == 0)
 		{
 			//Set the cue ball back on the table
-			ball.GetComponent<Rigidbody>().MovePosition(new Vector3(0, 40, 0));
+			ball.GetComponent<Rigidbody>().MovePosition(new Vector3(0, 35, 0));
 			ball.GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);	
 			Debug.Log("Cue ball pocketed.");
 		}

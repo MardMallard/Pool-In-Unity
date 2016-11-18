@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
 	private Vector3 offset = Vector3.zero;
 	private Behaviour halo = null;
 	private bool disableControl = false;
+	private bool resettingCueBall = false;
 	
 	private Player player1;
 	private Player player2;
@@ -152,12 +153,21 @@ public class PlayerController : MonoBehaviour
 			return;
 		}
 		
+		Player other = otherPlayer(currentPlayer);
+		
+		//Is the cue ball still resetting?
+		if (resettingCueBall)
+		{
+			Debug.Log("Cue ball is resetting.");
+			resettingCueBall = false;
+			return;
+		}
+		
 		//Did the player get a penalty for pocketing the cue ball?
 		if (currentPlayer.penalty)
 		{
 			Debug.Log("Penalty for pocketing the cue ball!");
 			currentPlayer.penalty = false;
-			Player other = otherPlayer(currentPlayer);
 			
 			//Give the other player an extra turn.
 			other.extraTurn = true;
@@ -175,9 +185,14 @@ public class PlayerController : MonoBehaviour
 			displayMessage.displayMessage("You get another turn!");
 			return;
 		}
+		else
+			displayMessage.displayMessage("Switching to player " 
+		+ (int)other.getPlayerNumber() + ".");
 		
 		//Switch the player every round.
-		changePlayer(otherPlayer(currentPlayer));
+		changePlayer(other);
+		
+		Debug.Log("New round: Player " + (int)currentPlayer.getPlayerNumber());
 	}
 	
 	//Everything related to changing the current player.
@@ -186,8 +201,6 @@ public class PlayerController : MonoBehaviour
 		Debug.Log("Switching to player: " + player.getPlayerNumber());
 		currentPlayer = player;
 		playerLabel.text = "PLAYER " + (int)player.getPlayerNumber();
-		displayMessage.displayMessage("Switching to player " 
-		+ (int)currentPlayer.getPlayerNumber() + ".");
 	}
 	
 	//Easily switch between players without writing a whole bunch of ifs and elses.
@@ -206,6 +219,7 @@ public class PlayerController : MonoBehaviour
 		{
 			Debug.Log("Penalty.");
 			currentPlayer.penalty = true;
+			resettingCueBall = true;
 		}
 		//Eight-ball pocketed!
 		else if (num == 8)
