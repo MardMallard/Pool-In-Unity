@@ -2617,7 +2617,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bfb4b20922eea24482addd31374b69a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  magnitude: 5
+  magnitude: 8
   lineRenderer: {fileID: 833693626}
 --- !u!122 &1258313548
 Halo:
