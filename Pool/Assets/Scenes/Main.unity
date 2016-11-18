@@ -2831,11 +2831,6 @@ Prefab:
       propertyPath: m_TagString
       value: Cue Ball
       objectReference: {fileID: 0}
-    - target: {fileID: 54000013023036788, guid: 63e716ec7837556418f8916afdc3b87e,
-        type: 2}
-      propertyPath: m_Mass
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 135000013678873706, guid: 63e716ec7837556418f8916afdc3b87e,
         type: 2}
       propertyPath: m_IsTrigger
@@ -2850,11 +2845,6 @@ Prefab:
         type: 2}
       propertyPath: m_MotionVectors
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 54000013023036788, guid: 63e716ec7837556418f8916afdc3b87e,
-        type: 2}
-      propertyPath: m_CollisionDetection
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 63e716ec7837556418f8916afdc3b87e, type: 2}
